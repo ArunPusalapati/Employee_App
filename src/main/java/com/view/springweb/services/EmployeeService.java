@@ -28,9 +28,10 @@ public class EmployeeService {
         this.modelmapper = modelmapper;
     }
 
-    public EmployeeDTO getEmployeeId(Long id) {
-        EmployeeEntity empEntity=employeeRepository.findById(id).orElse(null);
-        return modelmapper.map(empEntity,EmployeeDTO.class);
+    public Optional<EmployeeDTO> getEmployeeId(Long id) {
+
+        Optional<EmployeeEntity> empEntity=employeeRepository.findById(id);
+        return empEntity.map(empEntity1-> modelmapper.map(empEntity, EmployeeDTO.class));
     }
 
     public List<EmployeeDTO> getAllEmployees() {
@@ -64,7 +65,7 @@ public class EmployeeService {
 
     }
 
-    public boolean deleteEmployeeById(Long id) {
+    public Boolean deleteEmployeeById(Long id) {
         if(!existsById(id))
             return false;
         employeeRepository.deleteById(id);
